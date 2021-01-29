@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,11 +7,10 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import MenuIcon from "@material-ui/icons/Menu";
+import { Menu as MenuIcon, MenuBook as BookIcon } from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import Drawer from "@material-ui/core/Drawer";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,12 +39,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar() {
+  const history = useHistory();
   const [isOpen, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const styles = useStyles();
 
-  const handleListItemClick = (event, index) => {
+  const handleListItemClick = (event, index, path) => {
+    history.push(path);
     setSelectedIndex(index);
+    setOpen(false);
   };
 
   return (
@@ -75,12 +78,12 @@ export default function NavBar() {
             <ListItem
               button
               selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
+              onClick={(event) => handleListItemClick(event, 1, "/my/topics")}
             >
               <ListItemIcon>
-                <DraftsIcon />
+                <BookIcon />
               </ListItemIcon>
-              <ListItemText primary="Drafts" />
+              <ListItemText primary="My Topics" />
             </ListItem>
           </List>
           <Divider />
