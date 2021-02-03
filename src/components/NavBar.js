@@ -7,22 +7,36 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Menu as MenuIcon, MenuBook as BookIcon } from "@material-ui/icons";
+import { MenuBook as BookIcon } from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Slide from "@material-ui/core/Slide";
+
+import MenIcon from "../assets/icons/menu.svg";
+
+import Logo from "../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
   navBar: {
-    backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
-    // boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+    backgroundColor: "#ffffff",
+    boxShadow: "none",
+  },
+  drawer: {
+    "& .MuiDrawer-paper": {
+      borderBottomRightRadius: "16px",
+      borderTopRightRadius: "16px",
+    },
   },
   drawerContent: {
     width: 250,
     backgroundColor: "#ffffff",
-    // backdropFilter: "blur(4px)",
+  },
+  navList: {
+    paddingTop: "0px !important",
+    paddingBottom: "16px !important",
   },
   title: {
     height: "100%",
@@ -36,7 +50,34 @@ const useStyles = makeStyles((theme) => ({
     OBaseBackgroundClip: "text",
   },
   toolbar: { ...theme.mixins.toolbar, display: "flex", alignItems: "center" },
+  tabTitle: {
+    color: "#ffffff00",
+    background:
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    WebkitBackgroundClip: "text",
+    MozBackgroundClip: "text",
+    OBaseBackgroundClip: "text",
+  },
+  logo: {
+    position: "relative",
+    bottom: "1px",
+    left: "-6px",
+  },
+  logoNav: {
+    position: "relative",
+    left: "8.7px",
+    bottom: "2px",
+  },
 }));
+
+function HideOnScroll({ children }) {
+  const trigger = useScrollTrigger();
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
 
 export default function NavBar() {
   const history = useHistory();
@@ -52,48 +93,83 @@ export default function NavBar() {
 
   return (
     <>
-      <AppBar className={styles.navBar} position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={styles.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={() => setOpen(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6">{"Flash Learn"}</Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer anchor="left" open={isOpen} onClose={() => setOpen(false)}>
+      <HideOnScroll>
+        <AppBar className={styles.navBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => setOpen(true)}
+            >
+              <img src={MenIcon} alt="Menu" />
+            </IconButton>
+            <img className={styles.logo} src={Logo} alt="Logo" />
+            <Typography className={styles.tabTitle} variant="h6">
+              {"Flash Learn"}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
+      <Drawer
+        anchor="left"
+        className={styles.drawer}
+        open={isOpen}
+        onClose={() => setOpen(false)}
+      >
         <div className={styles.drawerContent}>
           <div className={styles.toolbar}>
+            <img className={styles.logoNav} src={Logo} alt="Logo" />
             <Typography variant="h6" className={styles.title}>
               {"Flash Learn"}
             </Typography>
           </div>
           <Divider />
-          <List component="nav" aria-label="main menu">
+          <List
+            className={styles.navList}
+            component="nav"
+            aria-label="main menu"
+          >
             <ListItem
               button
               selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1, "/my/topics")}
+              onClick={(event) =>
+                handleListItemClick(event, 1, "/my/card-decks")
+              }
             >
               <ListItemIcon>
                 <BookIcon />
               </ListItemIcon>
-              <ListItemText primary="My Topics" />
+              <ListItemText primary="My Card Decks" />
+            </ListItem>
+            <ListItem
+              button
+              selected={selectedIndex === 2}
+              onClick={(event) =>
+                handleListItemClick(event, 2, "/my/transcript-notes")
+              }
+            >
+              <ListItemIcon>
+                <BookIcon />
+              </ListItemIcon>
+              <ListItemText primary="Transcript Notes" />
             </ListItem>
           </List>
           <Divider />
           <List component="nav" aria-label="secondary mailbox folder">
             <ListItem
               button
-              selected={selectedIndex === 2}
-              onClick={(event) => handleListItemClick(event, 2)}
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3, "/my/settings")}
             >
-              <ListItemText primary="Trash" />
+              <ListItemText primary="Settings" />
+            </ListItem>
+            <ListItem
+              button
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4, "/my/settings")}
+            >
+              <ListItemText primary="My Profile" />
             </ListItem>
           </List>
         </div>

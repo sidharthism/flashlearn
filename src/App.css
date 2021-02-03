@@ -1,21 +1,28 @@
+@font-face {
+  font-family: "Montsterrat-Medium";
+  src: url("./assets/fonts/Montserrat/Montserrat-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Montsterrat-Regular";
+  src: url("./assets/fonts/Montserrat/Montserrat-Regular.ttf");
+}
+
 .App {
   text-align: center;
 }
 
-html {
-  /* background: linear-gradient(
-      136deg,
-      rgb(242, 113, 33) 0%,
-      rgb(233, 64, 87) 50%,
-      rgb(138, 35, 135) 100%
-    )
-    no-repeat center center; */
-  min-height: 100vh;
-  /* background-color: #f3ec78;
-    background-image: linear-gradient(45deg, #f3ec78, #af4261);
-    background-size: 100%;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-    -moz-text-fill-color: transparent; */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  font-family: "Montsterrat-Medium", "Roboto", "Open Sans", "sans-serif" !important;
 }
+
+/* p {
+  font-family: "Montsterrat-Regular", "Roboto", "Open Sans", "sans-serif" !important;
+} */
