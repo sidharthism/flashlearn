@@ -6,7 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 import { Container } from "@material-ui/core";
-import { Home } from "./pages";
+import { Home,Login,Signup } from "./pages";
 import { NavBar, TopicList } from "./components";
 import "./App.css";
 
@@ -14,8 +14,14 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <NavBar />
+      
         <Switch>
+        <Route exact path="/login">
+              <Login />
+          </Route>
+          <Route exact path="/signup">
+              <Signup />
+          </Route>
           <Route exact path="/my/card-decks">
             <Home />
           </Route>
@@ -25,6 +31,7 @@ function App() {
             </Container>
           </Route>
           <Redirect exact path="/" to="/my/card-decks" />
+         
         </Switch>
       </Router>
     </div>
