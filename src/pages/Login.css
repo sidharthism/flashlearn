@@ -1,0 +1,68 @@
+.login{
+    height:100vh;
+    background-image: -webkit-linear-gradient(180.02deg, #F27121 4.73%, #E94057 50.2%, #8A2387 99.98%);
+
+}
+
+.welcome{
+    color:#fff;
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -55%);
+}
+
+.welcome >img{
+    height: 300px;
+    width: 300px;
+}
+
+.bottom-container{
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin: auto;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    
+}
+.bottom-container > img{
+    height: 70px;
+    width: 70px;
+}
+
+input {
+    font-size: 15px;
+    border: 0;
+    padding: 12px 15px;
+    margin: 10px 0;
+    width: 75%;
+    outline: 0;
+    background: transparent;
+    border-bottom: 0.2px solid gray;
+  }
+
+  input:focus {
+    border-bottom: 0.5px solid darkorange;
+  }
+
+.passfield,
+.emailfield {
+    padding: 10px;
+    margin:auto;
+  display: flex !important;
+  justify-content: space-evenly;
+  flex-direction: row;
+  width: 80% !important;
+}
+
+.gradient{
+    padding: 15px;
+    background:  -webkit-linear-gradient(180.02deg, #F27121 4.73%, #E94057 50.2%, #8A2387 99.98%);
+    background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
