@@ -1,6 +1,8 @@
+import CardDeck from "./CardDeck";
+import CategoryItem from "./CategoryItem";
 import FlashCard from "./FlashCard";
+import Heading from "./Heading";
 import NavBar from "./NavBar";
 import TopicList from "./TopicList";
-import Heading from "./Heading";
 
-export { FlashCard, Heading, NavBar, TopicList };
+export { CardDeck, CategoryItem, FlashCard, Heading, NavBar, TopicList };

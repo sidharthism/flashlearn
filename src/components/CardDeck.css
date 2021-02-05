@@ -1,40 +1,4 @@
-.wave-surface {
-  width: 250px;
-  position: relative;
-  left: -50px;
-  bottom: -16px;
-  animation: wave 15s infinite cubic-bezier(0.36, 0.45, 0.63, 0.53);
-}
-.wave-height {
-  width: 100%;
-  position: relative;
-  background-color: #0099ff;
-  bottom: 0px;
-  height: 20px;
-}
-
-.wave-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  z-index: -1;
-}
-
-.wave-container {
-  position: relative;
-  height: 150px;
-  /* background-color: #0099ff30; */
-  background-color: #ffffff00 !important;
-  width: 144px;
-  overflow: hidden;
-  border-radius: 20px !important;
-  margin-top: 19px;
-}
-
-@keyframes wave {
+/* @keyframes wave {
   0% {
     transform: translate(-40px, -6px);
   }
@@ -50,4 +14,4 @@
   100% {
     transform: translate(-40px, -6px);
   }
-}
+} */

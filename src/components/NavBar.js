@@ -7,7 +7,12 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { MenuBook as BookIcon } from "@material-ui/icons";
+import {
+  AccountCircle as AccountIcon,
+  MenuBook as BookIcon,
+  FiberSmartRecord as RecordIcon,
+  Settings as SettingsIcon,
+} from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -150,7 +155,7 @@ export default function NavBar() {
               }
             >
               <ListItemIcon>
-                <BookIcon />
+                <RecordIcon />
               </ListItemIcon>
               <ListItemText primary="Transcript Notes" />
             </ListItem>
@@ -162,6 +167,9 @@ export default function NavBar() {
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3, "/my/settings")}
             >
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItem>
             <ListItem
@@ -169,6 +177,9 @@ export default function NavBar() {
               selected={selectedIndex === 4}
               onClick={(event) => handleListItemClick(event, 4, "/my/settings")}
             >
+              <ListItemIcon>
+                <AccountIcon />
+              </ListItemIcon>
               <ListItemText primary="My Profile" />
             </ListItem>
           </List>
