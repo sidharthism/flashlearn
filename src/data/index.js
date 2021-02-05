@@ -16,6 +16,7 @@ const DeckList = [
     percentCompleted: 82,
     isScheduled: false,
     revisedTimes: 10,
+    deckId: "0",
   },
   {
     name: "Deck B",
@@ -23,6 +24,7 @@ const DeckList = [
     percentCompleted: 52,
     isScheduled: true,
     revisedTimes: 7,
+    deckId: "0",
   },
   {
     name: "Deck C",
@@ -30,6 +32,7 @@ const DeckList = [
     percentCompleted: 22,
     isScheduled: true,
     revisedTimes: 3,
+    deckId: "0",
   },
   {
     name: "Deck D",
@@ -37,6 +40,7 @@ const DeckList = [
     percentCompleted: 72,
     isScheduled: false,
     revisedTimes: 8,
+    deckId: "0",
   },
   {
     name: "Deck E",
@@ -44,7 +48,38 @@ const DeckList = [
     percentCompleted: 2,
     isScheduled: false,
     revisedTimes: 0,
+    deckId: "0",
   },
 ];
 
-export { CategoriesList, DeckList };
+const SampleDeck = {
+  name: "Deck A",
+  numberOfCards: 7,
+  percentCompleted: 82,
+  isScheduled: false,
+  revisedTimes: 10,
+  deckId: "0",
+};
+
+const FlashCards = [
+  {
+    face: "Benevolent",
+    rear: "Well meaning and kindly.",
+    tag: "1",
+    categories: ["Cat A"],
+  },
+  {
+    face: "Accord",
+    rear: "Concurrence of opinion",
+    tag: "0",
+    categories: [],
+  },
+  {
+    face: "Constitute",
+    rear: "Compose or represent",
+    tag: "-1",
+    categories: ["Cat H"],
+  },
+];
+
+export { CategoriesList, DeckList, FlashCards, SampleDeck };

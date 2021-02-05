@@ -6,7 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 import { Container } from "@material-ui/core";
-import { Home,Login,Signup } from "./pages";
+import { Deck, Home, Login, Signup } from "./pages";
 import { NavBar, TopicList } from "./components";
 import "./App.css";
 
@@ -14,24 +14,26 @@ function App() {
   return (
     <div className="App">
       <Router>
-      
         <Switch>
-        <Route exact path="/login">
-              <Login />
+          <Route exact path="/login">
+            <Login />
           </Route>
           <Route exact path="/signup">
-              <Signup />
+            <Signup />
           </Route>
           <Route exact path="/my/card-decks">
+            <NavBar />
             <Home />
           </Route>
+          <Route path="/my/card-decks/deck/:id">
+            <Deck />
+          </Route>
           <Route exact path="/my/transcript-notes">
-            <Container style={{ padding: "52px 16px 16px 16px" }}>
+            <Container style={{ padding: "52px 16px 16px" }}>
               <TopicList />
             </Container>
           </Route>
-          <Redirect exact path="/" to="/my/card-decks" />
-         
+          <Redirect exact path="/" to="/login" />
         </Switch>
       </Router>
     </div>
