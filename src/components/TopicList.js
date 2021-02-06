@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory,Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -8,7 +8,9 @@ import {
   ChevronRight as ArrowIcon,
   MenuBook as BookIcon,
 } from "@material-ui/icons";
-import { ListItemAvatar, Avatar, Divider } from "@material-ui/core";
+import { ListItemAvatar, Avatar, Divider,Container,Fab } from "@material-ui/core";
+import MicIcon from '@material-ui/icons/Mic';
+import Theme from '../theme'
 
 const useStyles = makeStyles((theme) => ({
   topicList: {
@@ -27,11 +29,23 @@ const useStyles = makeStyles((theme) => ({
   arrowIcon: {
     color: "#0000008a",
   },
+  fab: {
+    position: "fixed",
+    bottom: 16,
+    right: 16,
+    color: "#ffffff",
+    backgroundImage: Theme.colors.gradientInclined,
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 export default function TopicList() {
   const styles = useStyles();
   return (
+    <>
+    <Container style={{ padding: "52px 16px 16px 16px" }}>
     <List
       //   subheader={<div className={styles.listHeader}>{"My Topics"}</div>}
       className={styles.topicList}
@@ -39,12 +53,21 @@ export default function TopicList() {
       <TopicItem />
       <TopicItem />
     </List>
+    </Container>
+    <Link to="/my/transcript-notes/new">
+    <Fab size="medium" variant="extended" className={styles.fab} >
+          <MicIcon className={styles.extendedIcon} />
+       
+        </Fab>
+        </Link>
+    </>
   );
 }
 
 function TopicItem() {
   const styles = useStyles();
   const history = useHistory();
+
   const handleClick = (event) => {
     history.push("/my/flashcards");
   };
