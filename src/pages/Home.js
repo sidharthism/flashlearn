@@ -6,6 +6,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { CardDeck, CategoryItem, Heading, NavBar } from "../components";
 import Theme from "../theme";
 
+import { useHistory } from "react-router-dom";
+
 // SAMPLE DATA
 import { CategoriesList, DeckList } from "../data";
 
@@ -67,6 +69,7 @@ export default function Home() {
   }, []);
 
   const styles = useStyles();
+  const history = useHistory();
   return (
     <>
       <Container className={styles.content}>

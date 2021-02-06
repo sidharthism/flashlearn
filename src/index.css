@@ -33,3 +33,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* .theme-dark {
+  filter: invert();
+  background: #333333;
+}
+#root {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+} */

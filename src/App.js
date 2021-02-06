@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { Home, Login, Signup, NewNote,Deck } from "./pages";
+import { Home, Login, Signup, NewNote, Deck, Review } from "./pages";
 import { NavBar, TopicList } from "./components";
 import "./App.css";
 
@@ -28,6 +28,10 @@ function App() {
             <NavBar />
             <Deck />
           </Route>
+          <Route path="/my/card-decks/review/:id">
+            <NavBar />
+            <Review />
+          </Route>
           <Route exact path="/my/transcript-notes">
             <NavBar />
             <TopicList />
@@ -37,7 +41,6 @@ function App() {
             <NewNote />
           </Route>
           <Redirect exact path="/" to="/my/card-decks" />
-
         </Switch>
       </Router>
     </div>

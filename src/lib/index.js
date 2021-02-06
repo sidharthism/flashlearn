@@ -5,4 +5,12 @@ import {
   getColorFromTag,
 } from "./convert";
 
-export { uid, getColorFromPercent, getPixelsFromPercent, getColorFromTag };
+import FlashMap from "./flashmap";
+
+export {
+  uid,
+  FlashMap,
+  getColorFromPercent,
+  getPixelsFromPercent,
+  getColorFromTag,
+};
