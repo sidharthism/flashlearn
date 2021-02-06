@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
+import { Button, Container, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   // DECK DETAILS
   deckDetails: {
-    padding: "4px 2px",
+    padding: "4px 8px",
     marginTop: "8px",
     marginBottom: "12px",
     position: "relative",
@@ -96,16 +96,25 @@ const useStyles = makeStyles((theme) => ({
     fontSize: Theme.fonts.variants.text.medium,
     marginBottom: "8px",
   },
-  reviewButtons: {
+  reviewButtonsContainer: {
     width: "100%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    padding: "16px",
+    padding: "16px 0px",
+  },
+  reviewButton: {
+    padding: "4px",
+    minWidth: "100px",
+    // minHeight: "32px",
+    borderRadius: "32px",
+  },
+  reviewBtnImg: {
+    height: "32px",
   },
   reviewPause: {
-    padding: "16px",
+    padding: "8px 16px 0px",
   },
   pauseButton: {
     boxshadow: "0px 0px 16px 0px rgba(46, 24, 24, 0.16) !important",
@@ -123,7 +132,7 @@ export default function Review() {
     let shuffledDeck = FlashMap(FlashCards);
     setFlashCards(shuffledDeck);
     setCurrentCard(shuffledDeck[0]);
-    console.log(shuffledDeck);
+    // console.log(shuffledDeck);
     setPercent(((count + 1) / shuffledDeck.length) * 100);
   }
 
@@ -173,49 +182,37 @@ export default function Review() {
             />
           </div>
         </Container>
-        <Container className={styles.reviewButtons}>
-          <Fab
+        <Container className={styles.reviewButtonsContainer}>
+          <Button
+            variant="contained"
             onClick={handleClick}
-            variant="extended"
-            size="medium"
+            className={styles.reviewButton}
             style={{
               backgroundColor: Theme.colors.red,
-              padding: "8px",
-              minWidth: "100px",
-              minHeight: "48px",
-              borderRadius: "24px",
             }}
           >
-            <img src={unknown} alt="unknown" />
-          </Fab>
-          <Fab
+            <img className={styles.reviewBtnImg} src={unknown} alt="unknown" />
+          </Button>
+          <Button
+            variant="contained"
             onClick={handleClick}
-            variant="extended"
-            size="medium"
+            className={styles.reviewButton}
             style={{
               backgroundColor: Theme.colors.green,
-              padding: "4px",
-              minWidth: "100px",
-              minHeight: "48px",
-              borderRadius: "24px",
             }}
           >
-            <img src={known} alt="known" />
-          </Fab>
-          <Fab
+            <img className={styles.reviewBtnImg} src={known} alt="known" />
+          </Button>
+          <Button
+            variant="contained"
             onClick={handleClick}
-            variant="extended"
-            size="medium"
+            className={styles.reviewButton}
             style={{
               backgroundColor: Theme.colors.yellow,
-              padding: "4px",
-              minWidth: "100px",
-              minHeight: "48px",
-              borderRadius: "24px",
             }}
           >
-            <img src={partial} alt="partial" />
-          </Fab>
+            <img className={styles.reviewBtnImg} src={partial} alt="partial" />
+          </Button>
         </Container>
         <Container className={styles.reviewPause}>
           <Button className={styles.pauseButton}>

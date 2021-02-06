@@ -47,11 +47,15 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.5",
     wordSpacing: "2.8px",
     fontSize: Theme.fonts.variants.text.small,
+    height: "99%",
+    width: "100%",
+    border: "none",
   },
 }));
 export default function NewNote() {
   const styles = useStyles();
   const [open, setOpen] = useState(null);
+  const [noteData, setNoteData] = useState("");
 
   const {
     transcript,
@@ -94,7 +98,11 @@ export default function NewNote() {
           {!open ? (
             <h2 className={styles.notify}>{"Please Start Recording"}</h2>
           ) : (
-            <h3 className={styles.note}>{transcript}</h3>
+            <textarea
+              placeholder="Listening audio..."
+              className={styles.note}
+              value={transcript}
+            />
           )}
         </Paper>
         <Fab size="large" className={styles.fab1} onClick={listenContinuously}>

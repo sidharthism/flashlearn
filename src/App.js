@@ -5,52 +5,39 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { Home, Login, Signup, NewNote, Deck,NewDeck, Review,NewFlash } from "./pages";
-import { NavBar, TopicList } from "./components";
+
+import { Login, Signup } from "./pages";
+
+import AppTabs from "./AppTabs";
 import "./App.css";
 
+// App Authentication
+import { AuthContext, useAuthInit } from "./firebase/auth";
+
 function App() {
+  // Authentication State
+  const { loading, auth } = useAuthInit();
+
+  if (loading) return <h1>{"Please wait..."}</h1>;
+
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/signup">
-            <Signup />
-          </Route>
-          <Route exact path="/my/card-decks">
-            <NavBar />
-            <Home />
-          </Route>
-          <Route exact path="/my/card-decks/new">
-            <NavBar />
-            <NewDeck />
-          </Route>
-          <Route path="/my/card-decks/deck/:id">
-            <NavBar />
-            <Deck />
-          </Route>
-          <Route exact path="/my/card-decks/newdeck">
-            <NavBar />
-            <NewFlash />
-          </Route>
-          <Route path="/my/card-decks/review/:id">
-            <NavBar />
-            <Review />
-          </Route>
-          <Route exact path="/my/transcript-notes">
-            <NavBar />
-            <TopicList />
-          </Route>
-          <Route exact path="/my/transcript-notes/new">
-            <NavBar />
-            <NewNote />
-          </Route>
-          <Redirect exact path="/" to="/my/card-decks" />
-        </Switch>
-      </Router>
+      <AuthContext.Provider value={auth}>
+        <Router>
+          <Switch>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/signup">
+              <Signup />
+            </Route>
+            <Route path="/my">
+              <AppTabs />
+            </Route>
+            <Redirect exact path="/" to="/my/card-decks" />
+          </Switch>
+        </Router>
+      </AuthContext.Provider>
     </div>
   );
 }

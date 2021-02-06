@@ -1,7 +1,12 @@
-import React from "react";
-import { useHistory, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory, Link, Redirect } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+
+import { SnackBar } from "../components";
+
+import { useAuth } from "../firebase/auth";
+import { auth, db } from "../firebase";
 
 import logo from "../assets/icons/logo.png";
 import user from "../assets/icons/user.svg";
@@ -19,15 +24,56 @@ const ColorButton = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
+    marginTop: "12px",
     borderRadius: 25,
     width: 260,
     color: "#fff",
   },
 }));
 
+const addNewUserInfo = async (uId, userInfo) => {
+  const userRef = db.collection("fl_users").doc(uId);
+  try {
+    await userRef.set(userInfo);
+    console.log("Registered Successfully!");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default function Signup() {
-  const classes = useStyles();
-  let history = useHistory();
+  const styles = useStyles();
+  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [error, setError] = useState(false);
+  const { loggedIn } = useAuth();
+  const history = useHistory();
+
+  async function handleSignup() {
+    if (password !== passwordConfirm) {
+      console.log("Passwords Not Same!");
+      return;
+    }
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      addNewUserInfo(user.uid, {
+        full_name: fullName,
+      });
+    } catch (err) {
+      setError(true);
+      setPassword("");
+      setPasswordConfirm("");
+    }
+  }
+
+  if (loggedIn) {
+    return <Redirect to="/my/card-decks" />;
+  }
 
   return (
     <div className="login">
@@ -42,32 +88,36 @@ export default function Signup() {
             <img src={user} alt=""></img>
             <input
               type="text"
-              placeholder="Full Name"
-              //onChange={(e) => setEmail(e.target.value)}
+              value={fullName}
+              placeholder="Enter Full Name"
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
           <div className="emailfield">
             <img src={user} alt=""></img>
             <input
               type="email"
+              value={email}
               placeholder="Enter Email-ID"
-              //onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="passfield">
             <img src={lock} alt=""></img>
             <input
               type="password"
+              value={password}
               placeholder="Enter Password"
-              // onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="passfield">
             <img src={lock} alt=""></img>
             <input
               type="password"
+              value={passwordConfirm}
               placeholder="Confirm Password"
-              // onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
             />
           </div>
         </div>
@@ -75,19 +125,27 @@ export default function Signup() {
           variant="contained"
           type="submit"
           color="primary"
-          className={classes.button}
+          className={styles.button}
           onClick={() => {
-            history.push("/login");
+            handleSignup();
           }}
         >
           Sign Up
         </ColorButton>
         <br></br>
-        <div style={{ color: "gray", padding: 20 }}>Or</div>
+        <div style={{ color: "gray", padding: "12px 8px 4px" }}>Or</div>
         <h3 className="gradient">
-          <Link to="/login"> Log In </Link>
+          <Link to="/login">Already have an account?</Link>
         </h3>
       </div>
+      <SnackBar
+        message="Invalid entries or passwords are not same"
+        severity="error"
+        showBar={error}
+        callback={() => {
+          setError(false);
+        }}
+      />
     </div>
   );
 }

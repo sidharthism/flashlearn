@@ -1,9 +1,21 @@
 .signup-welcome {
   color: #fff;
   position: absolute;
-  left: 50%;
+  left: 46px;
   top: 15%;
-  transform: translate(-50%, -15%);
+  text-align: left;
+  /* transform: translate(-50%, -15%); */
+}
+
+@media (max-height: 640px) {
+  .signup-welcome {
+    top: 11%;
+  }
+}
+
+.signup-welcome h1,
+.signup-welcome h3 {
+  margin-left: 0px;
 }
 
 .bottom-container {
@@ -25,7 +37,7 @@
 input {
   font-size: 15px;
   border: 0;
-  margin: 10px 0;
+  margin: 4px 0;
   width: 75%;
   outline: 0;
   background: transparent;
@@ -35,9 +47,18 @@ input:focus {
   border-bottom: 0.5px solid darkorange;
 }
 
+textarea:focus {
+  border: none;
+  outline: none;
+}
+
+textarea.focusable:focus {
+  border: 0.5px solid darkorange;
+}
+
 .passfield,
 .emailfield {
-  padding: 10px;
+  padding: 8px;
   margin: auto;
   display: flex !important;
   justify-content: space-evenly;
