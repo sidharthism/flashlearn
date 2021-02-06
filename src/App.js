@@ -5,8 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { Container } from "@material-ui/core";
-import { Home, Login, Signup, NewNote } from "./pages";
+import { Home, Login, Signup, NewNote,Deck } from "./pages";
 import { NavBar, TopicList } from "./components";
 import "./App.css";
 
@@ -14,7 +13,6 @@ function App() {
   return (
     <div className="App">
       <Router>
-
         <Switch>
           <Route exact path="/login">
             <Login />
@@ -25,6 +23,10 @@ function App() {
           <Route exact path="/my/card-decks">
             <NavBar />
             <Home />
+          </Route>
+          <Route path="/my/card-decks/deck/:id">
+            <NavBar />
+            <Deck />
           </Route>
           <Route exact path="/my/transcript-notes">
             <NavBar />

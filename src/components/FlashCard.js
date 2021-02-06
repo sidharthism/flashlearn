@@ -4,72 +4,93 @@ import { Card as MaterialCard } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import ReactCardFlip from "react-card-flip";
+
+import { getColorFromTag } from "../lib";
+import { CategoryItem } from "../components";
+import Theme from "../theme";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    minWidth: 275,
-    backgroundColor: "#ffffffe2",
-    backdropFilter: "blur(4px)",
+    minWidth: "276px",
+    // backgroundColor: "#ffffffe2",
+    // backdropFilter: "blur(4px)",
+    backgroundColor: "#ffffff",
+    width: "100%",
+    maxWidth: "576px",
+    margin: "0 auto 24px",
+    minHeight: "150px",
+    borderRadius: "20px",
   },
-  title: {
-    fontSize: 14,
+  cardText: {
+    fontSize: Theme.fonts.variants.text.medium,
+    textAlign: "left",
+    fontWeight: "500",
+    marginTop: "16px",
+  },
+  btnText: {
+    color: Theme.colors.greyMedium,
+  },
+  cardCategories: {
+    display: "flex",
+    paddingTop: "16px",
+    alignItems: "flex-end",
+    height: "48px",
+  },
+  "@global": {
+    ".react-card-flip": {
+      width: "100%",
+    },
   },
 }));
 
-function Card({ buttonText, content, handleFlip }) {
-  const classes = useStyles();
+function Card({ buttonText, content, handleFlip, tag, categories }) {
+  const styles = useStyles();
 
   return (
-    <MaterialCard className={classes.card}>
+    <MaterialCard
+      className={styles.card}
+      style={{ border: `1.6px solid ${getColorFromTag(tag)}` }}
+    >
       <CardContent>
-        {/* <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
-          Word of the Day
-        </Typography> */}
-        <Typography variant="h5" component="h2">
-          {content}
-        </Typography>
-        {/* <Typography variant="body2" component="p">
-         
-        </Typography> */}
+        <h3 className={styles.cardText}>{content}</h3>
+        <div className={styles.cardCategories}>
+          {categories !== undefined &&
+            categories.map((item) => {
+              return <CategoryItem text={item} />;
+            })}
+        </div>
       </CardContent>
       <CardActions>
         <Button size="small" onClick={handleFlip}>
-          {buttonText}
+          <span className={styles.btnText}>{buttonText}</span>
         </Button>
       </CardActions>
     </MaterialCard>
   );
 }
 
-export default function FlashCard() {
+export default function FlashCard({ face, rear, tag, categories }) {
   const [flipped, setFlipped] = useState(false);
 
   const handleFlip = () => {
     setFlipped((prevVal) => !prevVal);
   };
 
-  const sampleData = {
-    face: "Benevolent",
-    rear: "Well meaning and kindly.",
-  };
-
   return (
     <ReactCardFlip isFlipped={flipped} flipDirection="vertical">
       <Card
         buttonText="Show"
-        content={sampleData.face}
+        content={face}
         handleFlip={handleFlip}
+        tag={tag}
+        categories={categories}
       />
       <Card
         buttonText="Hide"
-        content={sampleData.rear}
+        content={rear}
         handleFlip={handleFlip}
+        tag={tag}
       />
     </ReactCardFlip>
   );
