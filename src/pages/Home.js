@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
+import {Link} from 'react-router-dom'
 
 import { CardDeck, CategoryItem, Heading, NavBar } from "../components";
 import Theme from "../theme";
@@ -90,10 +91,12 @@ export default function Home() {
             </div>
           )}
         </Container>
+        <Link to="/my/card-decks/new">
         <Fab size="medium" variant="extended" className={styles.fab}>
           <AddIcon className={styles.extendedIcon} />
           {"New"}
         </Fab>
+        </Link>
       </Container>
     </>
   );
