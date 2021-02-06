@@ -5,7 +5,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import { Home, Login, Signup, NewNote, Deck, Review } from "./pages";
+import { Home, Login, Signup, NewNote, Deck,NewDeck, Review,NewFlash } from "./pages";
 import { NavBar, TopicList } from "./components";
 import "./App.css";
 
@@ -24,9 +24,17 @@ function App() {
             <NavBar />
             <Home />
           </Route>
+          <Route exact path="/my/card-decks/new">
+            <NavBar />
+            <NewDeck />
+          </Route>
           <Route path="/my/card-decks/deck/:id">
             <NavBar />
             <Deck />
+          </Route>
+          <Route exact path="/my/card-decks/newdeck">
+            <NavBar />
+            <NewFlash />
           </Route>
           <Route path="/my/card-decks/review/:id">
             <NavBar />

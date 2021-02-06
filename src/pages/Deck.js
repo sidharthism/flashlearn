@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add as AddIcon, PlayArrow as ReviewIcon } from "@material-ui/icons";
+import {Link} from 'react-router-dom'
 
 import { getColorFromPercent } from "../lib";
 import { Heading, FlashCard } from "../components";
@@ -123,9 +124,11 @@ export default function Deck() {
             return <FlashCard {...item} />;
           })}
         </Container>
+        <Link to="/my/card-decks/newdeck">
         <Fab size="large" className={styles.fab}>
           <AddIcon />
         </Fab>
+        </Link>
       </Container>
     </>
   );
