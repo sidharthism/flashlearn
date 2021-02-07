@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, Link, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
@@ -17,7 +17,7 @@ const ColorButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText("#fff"),
     backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+      "linear-gradient(136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
   },
 }))(Button);
 
@@ -49,11 +49,13 @@ export default function Signup() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState(false);
   const { loggedIn } = useAuth();
-  const history = useHistory();
 
   async function handleSignup() {
     if (password !== passwordConfirm) {
       console.log("Passwords Not Same!");
+      setError(true);
+      setPassword("");
+      setPasswordConfirm("");
       return;
     }
     try {

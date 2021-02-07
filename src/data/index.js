@@ -12,10 +12,10 @@ const CategoriesList = [
 const DeckList = [
   {
     name: "Deck A",
-    numberOfCards: 7,
+    numberOfCards: 3,
     percentCompleted: 82,
     isScheduled: false,
-    revisedTimes: 10,
+    revisedTimes: 3,
     deckId: "0",
   },
   {
@@ -54,10 +54,10 @@ const DeckList = [
 
 const SampleDeck = {
   name: "Deck A",
-  numberOfCards: 7,
+  numberOfCards: 3,
   percentCompleted: 82,
   isScheduled: false,
-  revisedTimes: 10,
+  revisedTimes: 3,
   deckId: "0",
 };
 

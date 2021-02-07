@@ -115,6 +115,7 @@ export default function CardDeck({
   isScheduled,
   revisedTimes,
   percentCompleted,
+  onClick,
 }) {
   const styles = useStyles();
   const [title, setTitle] = useState("Deck Title");
@@ -168,7 +169,7 @@ export default function CardDeck({
         {scheduled && <AccessTimeIcon className={styles.deckAccessTimeIcon} />}
         <p className={styles.deckRevisedTimes}>{revTimes}</p>
       </div>
-      <Button className={styles.deckButton} />
+      <Button className={styles.deckButton} onClick={onClick} />
     </Paper>
   );
 }

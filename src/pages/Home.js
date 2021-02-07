@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 import { CardDeck, CategoryItem, Heading, NavBar } from "../components";
 import Theme from "../theme";
@@ -82,8 +82,13 @@ export default function Home() {
         </Container>
         <Heading.Medium text="Card Decks" />
         <Container className={styles.cardDecks}>
-          {cardDecks.map((item) => {
-            return <CardDeck {...item} />;
+          {cardDecks.map((item, index) => {
+            return (
+              <CardDeck
+                {...item}
+                onClick={() => history.push(`/my/card-decks/deck/${index}`)}
+              />
+            );
           })}
           {cardDecks.length === 0 && (
             <div className={styles.empty}>
@@ -92,10 +97,10 @@ export default function Home() {
           )}
         </Container>
         <Link to="/my/card-decks/new">
-        <Fab size="medium" variant="extended" className={styles.fab}>
-          <AddIcon className={styles.extendedIcon} />
-          {"New"}
-        </Fab>
+          <Fab size="medium" variant="extended" className={styles.fab}>
+            <AddIcon className={styles.extendedIcon} />
+            {"New"}
+          </Fab>
         </Link>
       </Container>
     </>

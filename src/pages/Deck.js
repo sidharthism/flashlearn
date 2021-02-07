@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add as AddIcon, PlayArrow as ReviewIcon } from "@material-ui/icons";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 import { getColorFromPercent } from "../lib";
 import { Heading, FlashCard } from "../components";
@@ -86,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Deck() {
+  const history = useHistory();
   const [flashCards, setFlashCards] = useState([]);
   function loadCardDecks() {
     setFlashCards(FlashCards);
@@ -98,10 +100,10 @@ export default function Deck() {
   return (
     <>
       <Container className={styles.content}>
-        <Heading.Medium text="Deck Title" />
+        <Heading.Medium text="Deck A" />
         <Container className={styles.deckDetails}>
-          <h3 className={styles.numberOfCards}>{"0 Cards"}</h3>
-          <h3 className={styles.revised}>{"Not yet revised."}</h3>
+          <h3 className={styles.numberOfCards}>{"3 Cards"}</h3>
+          <h3 className={styles.revised}>{"Revised 3 times"}</h3>
           <div
             className={styles.percentCompleted}
             style={{
@@ -113,7 +115,14 @@ export default function Deck() {
             <h4>{SampleDeck.percentCompleted + "%"}</h4>
           </div>
           <div className={styles.review}>
-            <Fab size="small" className={styles.reviewButton}>
+            <Fab
+              size="small"
+              className={styles.reviewButton}
+              onClick={history
+                .push
+                // `/my/card-decks/review/${SampleDeck.deckId}`
+                ()}
+            >
               <ReviewIcon />
             </Fab>
           </div>
@@ -125,9 +134,9 @@ export default function Deck() {
           })}
         </Container>
         <Link to="/my/card-decks/newdeck">
-        <Fab size="large" className={styles.fab}>
-          <AddIcon />
-        </Fab>
+          <Fab size="large" className={styles.fab}>
+            <AddIcon />
+          </Fab>
         </Link>
       </Container>
     </>
