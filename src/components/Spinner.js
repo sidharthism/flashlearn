@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   spinner: {
     animation: `$spin 1s linear infinite`,
   },
-  spinnerContainer: {
+  loadingSpinnerContainer: {
     position: "absolute",
     // bottom: "0",
     // right: "0",
@@ -26,12 +26,30 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     backgroundColor: "#ffffff",
   },
+  cardSpinnerContainer: {
+    position: "absolute",
+    zIndex: "1000",
+    left: "0",
+    top: "0",
+    display: "flex",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+  },
 }));
 
-export default function Spinner() {
+export default function Spinner({ variant = 0 }) {
   const styles = useStyles();
   return (
-    <div className={styles.spinnerContainer}>
+    <div
+      className={
+        variant === 1
+          ? styles.cardSpinnerContainer
+          : styles.loadingSpinnerContainer
+      }
+    >
       <img src={spinner} className={styles.spinner} alt="Loading" />
     </div>
   );

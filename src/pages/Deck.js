@@ -3,7 +3,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { Container, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add as AddIcon, PlayArrow as ReviewIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
 
 import { getColorFromPercent } from "../lib";
 import { Heading, FlashCard, Spinner } from "../components";

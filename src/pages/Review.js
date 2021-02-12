@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Button, Container, Paper, Typography } from "@material-ui/core";
+import { useParams, useHistory } from "react-router-dom";
+import { Button, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
 
 import { Heading, FlashCard, Spinner } from "../components";
 import Theme from "../theme";
@@ -124,16 +123,23 @@ const useStyles = makeStyles((theme) => ({
     boxshadow: "0px 0px 16px 0px rgba(46, 24, 24, 0.16) !important",
     borderRadius: "100%",
   },
+  // "@global": {
+  //   img: {
+  //     userSelect: "none !important",
+  //   },
+  // },
 }));
 
 export default function Review() {
   const { id } = useParams();
+  const history = useHistory();
   const [deck, setDeck] = useState(null);
   const [flashCards, setFlashCards] = useState([]);
   const [currentCard, setCurrentCard] = useState(null);
   const [ccId, setCcId] = useState("");
   const [percent, setPercent] = useState(0);
   const [count, setCount] = useState(0);
+  // const [sum, setSum] = useState(0);
   const [loading, setLoading] = useState(true);
   const [cardUpdating, setCardUpdating] = useState(false);
 
@@ -187,7 +193,33 @@ export default function Review() {
     loadCardDeck(id);
   }, [id]);
 
+  // UPDATE PERCENTAGE AND REVIEW
+
+  function updatePercentageAndReview(deckId, percent) {
+    const deckRef = db.collection("card_decks").doc(deckId);
+    deckRef
+      .get()
+      .then((doc) => {
+        let docData = doc.data();
+        deckRef
+          .update({
+            percentCompleted: Number(percent),
+            revisedTimes: Number(docData.revisedTimes) + 1,
+          })
+          .then(() => {
+            history.goBack();
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
   function handleClick(tag) {
+    // setSum((prev) => prev + Number(tag) + 1);
     setCardUpdating(true);
     const flcRef = db
       .collection("card_decks")
@@ -210,20 +242,28 @@ export default function Review() {
           })
         );
         // console.log(flashCards);
-
         let c = count;
         if (c === flashCards.length - 1) {
-          setCount(0);
-          c = 0;
+          // REVIEW COMPLETED, UPDATE PERCENTAGE
+          let sum = 0;
+          for (let i = 0; i < flashCards.length; i++) {
+            sum += flashCards[i].data.tag + 1;
+          }
+          let percent = (sum / (2 * flashCards.length)) * 100;
+          // console.log(percent);
+          // Check whether updation is correct
+          updatePercentageAndReview(id, percent);
+          // setCount(0);
+          // c = 0;
         } else {
           setCount((prev) => prev + 1);
           c = c + 1;
+          setPercent(((c + 1) / flashCards.length) * 100);
+          setCurrentCard(flashCards[c]);
+          setCcId(flashCards[c].id);
+          // console.log(ccId);
+          setCardUpdating(false);
         }
-        setPercent(((c + 1) / flashCards.length) * 100);
-        setCurrentCard(flashCards[c]);
-        setCcId(flashCards[c].id);
-        // console.log(ccId);
-        setCardUpdating(false);
       })
       .catch((err) => {
         console.log(err.message);
@@ -249,7 +289,7 @@ export default function Review() {
           {currentCard !== null && (
             <FlashCard {...currentCard.data} onReview={true} />
           )}
-          {cardUpdating && <Spinner />}
+          {cardUpdating && <Spinner variant={1} />}
         </Container>
         <Container className={styles.progressContainer}>
           <div className={styles.metaInfo}>

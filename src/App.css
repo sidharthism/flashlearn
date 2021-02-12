@@ -10,6 +10,11 @@
 
 .App {
   text-align: center;
+  user-select: none !important;
+}
+
+img {
+  user-select: none !important;
 }
 
 h1,

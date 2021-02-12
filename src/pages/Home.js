@@ -13,7 +13,7 @@ import { useAuth } from "../firebase/auth";
 import { db } from "../firebase";
 
 // SAMPLE DATA
-import { CategoriesList, DeckList } from "../data";
+import { CategoriesList } from "../data";
 
 const useStyles = makeStyles((theme) => ({
   content: {

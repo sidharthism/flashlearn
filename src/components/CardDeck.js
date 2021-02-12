@@ -124,6 +124,7 @@ export default function CardDeck({
   const [h, setH] = useState(0);
   const [waveColor, setWaveColor] = useState("#ffffff");
   const [scheduled, setScheduled] = useState(false);
+
   useEffect(() => {
     setWaveColor(
       percentCompleted ? getColorFromPercent(percentCompleted) : "#ffffff00"
