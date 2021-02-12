@@ -5,6 +5,7 @@ import Heading from "./Heading";
 import NavBar from "./NavBar";
 import SnackBar from "./SnackBar";
 import TopicList from "./TopicList";
+import Spinner from "./Spinner";
 
 export {
   CardDeck,
@@ -13,5 +14,6 @@ export {
   Heading,
   NavBar,
   SnackBar,
+  Spinner,
   TopicList,
 };

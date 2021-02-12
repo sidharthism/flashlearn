@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Container, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 
-import { Heading, FlashCard } from "../components";
+import { Heading, FlashCard, Spinner } from "../components";
 import Theme from "../theme";
 
 import { FlashMap, getColorFromPercent } from "../lib";
@@ -14,7 +15,9 @@ import partial from "../assets/icons/partial.svg";
 import pause from "../assets/icons/pause.svg";
 
 // SAMPLE DATA
-import { FlashCards, SampleDeck } from "../data";
+// import { FlashCards, SampleDeck } from "../data";
+
+import { db } from "../firebase";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -41,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    position: "relative",
   },
   // EMPTY LIST
   empty: {
@@ -123,50 +127,129 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Review() {
+  const { id } = useParams();
+  const [deck, setDeck] = useState(null);
   const [flashCards, setFlashCards] = useState([]);
   const [currentCard, setCurrentCard] = useState(null);
+  const [ccId, setCcId] = useState("");
   const [percent, setPercent] = useState(0);
   const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [cardUpdating, setCardUpdating] = useState(false);
 
-  function shuffleCardDecks() {
-    let shuffledDeck = FlashMap(FlashCards);
+  const styles = useStyles();
+
+  function shuffleCardDecks(cardArray) {
+    let shuffledDeck = FlashMap(cardArray);
     setFlashCards(shuffledDeck);
     setCurrentCard(shuffledDeck[0]);
+    setCcId(shuffledDeck[0].id);
+    // console.log(shuffledDeck[0]);
     // console.log(shuffledDeck);
     setPercent(((count + 1) / shuffledDeck.length) * 100);
   }
 
-  useEffect(() => {
-    shuffleCardDecks();
-  }, []);
-
-  function handleClick() {
-    let c = count;
-    if (c === flashCards.length - 1) {
-      setCount(0);
-      c = 0;
-    } else {
-      setCount((prev) => prev + 1);
-      c = c + 1;
-    }
-    setPercent(((c + 1) / flashCards.length) * 100);
-    setCurrentCard(flashCards[c]);
+  function loadFlashCards(id) {
+    const flcsRef = db
+      .collection("card_decks")
+      .doc(id)
+      .collection("flash_cards");
+    flcsRef
+      .get()
+      .then(({ docs }) => {
+        let flcs = docs.map((flc) => ({ id: flc.id, data: flc.data() }));
+        // console.log(flcs);
+        // setFlashCards(flcs);
+        shuffleCardDecks(flcs);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }
 
-  const styles = useStyles();
+  function loadCardDeck(id) {
+    const decksRef = db.collection("card_decks");
+    decksRef
+      .doc(id)
+      .get()
+      .then((doc) => {
+        // console.log(doc.data());
+        setDeck(doc.data());
+        loadFlashCards(id);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  useEffect(() => {
+    loadCardDeck(id);
+  }, [id]);
+
+  function handleClick(tag) {
+    setCardUpdating(true);
+    const flcRef = db
+      .collection("card_decks")
+      .doc(id)
+      .collection("flash_cards")
+      .doc(ccId);
+    flcRef
+      .update({
+        tag: Number(tag),
+      })
+      .then(() => {
+        // UPDATE THE CURRENT CARD TAG
+        setFlashCards((prev) =>
+          prev.map((card) => {
+            let newCard =
+              card.id === ccId
+                ? { id: card.id, data: { ...card.data, tag: Number(tag) } }
+                : card;
+            return newCard;
+          })
+        );
+        // console.log(flashCards);
+
+        let c = count;
+        if (c === flashCards.length - 1) {
+          setCount(0);
+          c = 0;
+        } else {
+          setCount((prev) => prev + 1);
+          c = c + 1;
+        }
+        setPercent(((c + 1) / flashCards.length) * 100);
+        setCurrentCard(flashCards[c]);
+        setCcId(flashCards[c].id);
+        // console.log(ccId);
+        setCardUpdating(false);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  if (loading) return <Spinner />;
+
   return (
     <>
       <Container className={styles.content}>
-        <Heading.Medium text="Deck A" />
+        <Heading.Medium text={deck ? deck.name : "-"} />
         <Container className={styles.deckDetails}>
-          <h3 className={styles.numberOfCards}>{"3 Cards"}</h3>
+          <h3 className={styles.numberOfCards}>
+            {deck ? deck.numberOfCards + " Cards" : "0 Cards"}
+          </h3>
           <h3 className={styles.revised}>{"Review in progress..."}</h3>
           <div className={styles.percentProgress}>
             <h4>{"?"}</h4>
           </div>
         </Container>
         <Container className={styles.flashCardsContainer}>
-          {currentCard !== null && <FlashCard {...currentCard} />}
+          {currentCard !== null && (
+            <FlashCard {...currentCard.data} onReview={true} />
+          )}
+          {cardUpdating && <Spinner />}
         </Container>
         <Container className={styles.progressContainer}>
           <div className={styles.metaInfo}>
@@ -185,7 +268,7 @@ export default function Review() {
         <Container className={styles.reviewButtonsContainer}>
           <Button
             variant="contained"
-            onClick={handleClick}
+            onClick={() => handleClick(-1)}
             className={styles.reviewButton}
             style={{
               backgroundColor: Theme.colors.red,
@@ -195,7 +278,7 @@ export default function Review() {
           </Button>
           <Button
             variant="contained"
-            onClick={handleClick}
+            onClick={() => handleClick(1)}
             className={styles.reviewButton}
             style={{
               backgroundColor: Theme.colors.green,
@@ -205,7 +288,7 @@ export default function Review() {
           </Button>
           <Button
             variant="contained"
-            onClick={handleClick}
+            onClick={() => handleClick(0)}
             className={styles.reviewButton}
             style={{
               backgroundColor: Theme.colors.yellow,

@@ -44,9 +44,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Card({ buttonText, content, handleFlip, tag, categories }) {
+function Card({ buttonText, content, handleFlip, tag, categories, onReview }) {
   const styles = useStyles();
-
   return (
     <MaterialCard
       className={styles.card}
@@ -56,21 +55,34 @@ function Card({ buttonText, content, handleFlip, tag, categories }) {
         <h3 className={styles.cardText}>{content}</h3>
         <div className={styles.cardCategories}>
           {categories !== undefined &&
-            categories.map((item) => {
-              return <CategoryItem text={item} />;
+            categories.length > 0 &&
+            categories[0] !== "" &&
+            categories.map((item, index) => {
+              return <CategoryItem text={item} key={index} />;
             })}
         </div>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleFlip}>
-          <span className={styles.btnText}>{buttonText}</span>
+        <Button size="small" onClick={handleFlip} disabled={onReview}>
+          <span
+            className={styles.btnText}
+            style={{ textDecoration: onReview ? "line-through" : "none" }}
+          >
+            {buttonText}
+          </span>
         </Button>
       </CardActions>
     </MaterialCard>
   );
 }
 
-export default function FlashCard({ face, rear, tag, categories }) {
+export default function FlashCard({
+  face,
+  rear,
+  tag,
+  categories,
+  onReview = false,
+}) {
   const [flipped, setFlipped] = useState(false);
 
   const handleFlip = () => {
@@ -85,12 +97,14 @@ export default function FlashCard({ face, rear, tag, categories }) {
         handleFlip={handleFlip}
         tag={tag}
         categories={categories}
+        onReview={onReview}
       />
       <Card
         buttonText="Hide"
         content={rear}
         handleFlip={handleFlip}
         tag={tag}
+        onReview={onReview}
       />
     </ReactCardFlip>
   );

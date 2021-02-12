@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
+import { useHistory, useParams } from "react-router-dom";
+import { Container, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add as AddIcon, PlayArrow as ReviewIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 import { getColorFromPercent } from "../lib";
-import { Heading, FlashCard } from "../components";
+import { Heading, FlashCard, Spinner } from "../components";
 import Theme from "../theme";
 
+import { db } from "../firebase";
+
 // SAMPLE DATA
-import { FlashCards, SampleDeck } from "../data";
+// import { FlashCards, SampleDeck } from "../data";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -88,40 +90,82 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Deck() {
   const history = useHistory();
+  const { id } = useParams();
   const [flashCards, setFlashCards] = useState([]);
-  function loadCardDecks() {
-    setFlashCards(FlashCards);
+  const [deck, setDeck] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  function loadFlashCards(id) {
+    const flcsRef = db
+      .collection("card_decks")
+      .doc(id)
+      .collection("flash_cards");
+    flcsRef
+      .get()
+      .then(({ docs }) => {
+        let flcs = docs.map((flc) => ({ id: flc.id, data: flc.data() }));
+        // console.log(flcs);
+        setFlashCards(flcs);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }
+
+  function loadCardDeck(id) {
+    const decksRef = db.collection("card_decks");
+    decksRef
+      .doc(id)
+      .get()
+      .then((doc) => {
+        // console.log(doc.data());
+        setDeck(doc.data());
+        loadFlashCards(id);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
   useEffect(() => {
-    loadCardDecks();
-  }, []);
+    loadCardDeck(id);
+  }, [id]);
 
   const styles = useStyles();
+
+  if (loading) return <Spinner />;
+
   return (
     <>
       <Container className={styles.content}>
-        <Heading.Medium text="Deck A" />
+        <Heading.Medium text={deck ? deck.name : "-"} />
         <Container className={styles.deckDetails}>
-          <h3 className={styles.numberOfCards}>{"3 Cards"}</h3>
-          <h3 className={styles.revised}>{"Revised 3 times"}</h3>
+          <h3 className={styles.numberOfCards}>
+            {deck ? deck.numberOfCards + " Cards" : "0 Cards"}
+          </h3>
+          <h3 className={styles.revised}>
+            {deck
+              ? "Revised " + deck.revisedTimes + " times"
+              : "Revised 0 times"}
+          </h3>
           <div
             className={styles.percentCompleted}
             style={{
               border: `2.8px solid ${getColorFromPercent(
-                SampleDeck.percentCompleted
+                deck ? deck.percentCompleted : 0
               )}`,
             }}
           >
-            <h4>{SampleDeck.percentCompleted + "%"}</h4>
+            <h4>{deck ? deck.percentCompleted + "%" : "0 %"}</h4>
           </div>
           <div className={styles.review}>
             <Fab
               size="small"
               className={styles.reviewButton}
-              onClick={history
-                .push
-                // `/my/card-decks/review/${SampleDeck.deckId}`
-                ()}
+              onClick={() => {
+                history.push(`/my/card-decks/review/${id}`);
+              }}
             >
               <ReviewIcon />
             </Fab>
@@ -130,14 +174,24 @@ export default function Deck() {
         <Heading.Medium text="Flash Cards" />
         <Container className={styles.flashCardsContainer}>
           {flashCards.map((item) => {
-            return <FlashCard {...item} />;
+            return <FlashCard key={item.id} {...item.data} />;
           })}
+          {flashCards.length === 0 && (
+            <div className={styles.empty}>
+              {"To create a new flash card, click +"}
+            </div>
+          )}
         </Container>
-        <Link to="/my/card-decks/newdeck">
-          <Fab size="large" className={styles.fab}>
-            <AddIcon />
-          </Fab>
-        </Link>
+
+        <Fab
+          size="large"
+          className={styles.fab}
+          onClick={() => {
+            history.push(`/my/card-decks/${id}/newflash`);
+          }}
+        >
+          <AddIcon />
+        </Fab>
       </Container>
     </>
   );

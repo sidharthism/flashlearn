@@ -175,7 +175,7 @@ export default function NavBar() {
             <ListItem
               button
               selected={selectedIndex === 4}
-              onClick={(event) => handleListItemClick(event, 4, "/my/settings")}
+              onClick={(event) => handleListItemClick(event, 4, "/my/profile")}
             >
               <ListItemIcon>
                 <AccountIcon />

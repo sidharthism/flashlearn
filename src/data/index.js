@@ -64,7 +64,7 @@ const SampleDeck = {
 const FlashCards = [
   {
     face: "Benevolent",
-    rear: "Well meaning and kindly.",
+    rear: "Well meaning and kindly",
     tag: "1",
     categories: ["Cat A"],
   },

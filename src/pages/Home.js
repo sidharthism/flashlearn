@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Fab, Paper, Typography } from "@material-ui/core";
+import { Container, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
 
-import { CardDeck, CategoryItem, Heading, NavBar } from "../components";
+import { CardDeck, CategoryItem, Heading, Spinner } from "../components";
 import Theme from "../theme";
 
 import { useHistory } from "react-router-dom";
+
+import { useAuth } from "../firebase/auth";
+import { db } from "../firebase";
 
 // SAMPLE DATA
 import { CategoriesList, DeckList } from "../data";
@@ -62,31 +65,50 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const [cardDecks, setCardDecks] = useState([]);
-  function loadCardDecks() {
-    setCardDecks(DeckList);
-  }
-  useEffect(() => {
-    loadCardDecks();
-  }, []);
+  const {
+    user: { uid },
+  } = useAuth();
 
   const styles = useStyles();
   const history = useHistory();
+  const [loading, setLoading] = useState(true);
+
+  function loadCardDecks(uid) {
+    // setCardDecks(DeckList);
+    const decksRef = db.collection("card_decks");
+    decksRef
+      .where("userId", "==", uid)
+      .get()
+      .then(({ docs }) => {
+        let decks = docs.map((deck) => ({ id: deck.id, data: deck.data() }));
+        setCardDecks(decks);
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    loadCardDecks(uid);
+  }, [uid]);
+
+  if (loading) return <Spinner />;
+
   return (
     <>
       <Container className={styles.content}>
         <Heading.Medium text="Categories" />
         <Container className={styles.categoryList}>
-          {CategoriesList.map((item) => {
-            return <CategoryItem text={item} />;
+          {CategoriesList.map((item, index) => {
+            return <CategoryItem text={item} key={index} />;
           })}
         </Container>
         <Heading.Medium text="Card Decks" />
         <Container className={styles.cardDecks}>
-          {cardDecks.map((item, index) => {
+          {cardDecks.map((item) => {
             return (
               <CardDeck
-                {...item}
-                onClick={() => history.push(`/my/card-decks/deck/${index}`)}
+                key={item.id}
+                {...item.data}
+                onClick={() => history.push(`/my/card-decks/deck/${item.id}`)}
               />
             );
           })}

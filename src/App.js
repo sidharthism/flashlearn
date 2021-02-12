@@ -6,6 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 
+import { Spinner } from "./components";
 import { Login, Signup } from "./pages";
 
 import AppTabs from "./AppTabs";
@@ -18,7 +19,7 @@ function App() {
   // Authentication State
   const { loading, auth } = useAuthInit();
 
-  if (loading) return <h1>{"Please wait..."}</h1>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="App">

@@ -64,7 +64,7 @@ export default function Signup() {
         password
       );
       addNewUserInfo(user.uid, {
-        full_name: fullName,
+        fullName: fullName,
       });
     } catch (err) {
       setError(true);
