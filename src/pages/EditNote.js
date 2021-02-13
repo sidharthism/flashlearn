@@ -75,6 +75,10 @@ export default function EditNote() {
   const history = useHistory();
 
   function saveNote() {
+    if (noteTitle === "" || noteContent === "") {
+      console.log("Enter note title and/or content");
+      return;
+    }
     const notesRef = db.collection("fl_users").doc(uid).collection("notes");
     let newNote = {
       title: noteTitle,

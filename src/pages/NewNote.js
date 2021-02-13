@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   fab1: {
     position: "fixed",
     bottom: 16,
-    right: 160,
+    right: 150,
     color: "#ffffff",
     backgroundImage: Theme.colors.gradientInclined,
   },
@@ -63,6 +63,7 @@ export default function NewNote() {
   const [isRecording, setIsRecording] = useState(false);
   // const [doneRecording, setDoneRecording] = useState(false);
   // const [noteData, setNoteData] = useState("");
+  const [error, setError] = useState(false);
   const history = useHistory();
 
   const {
@@ -80,13 +81,11 @@ export default function NewNote() {
   }, [interimTranscript, finalTranscript]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return null;
-  }
-
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    setError(true);
     console.log(
       "Your browser does not support speech recognition software! Try Chrome desktop, maybe?"
     );
+    // return null;
   }
 
   let StopRecording = SpeechRecognition.abortListening;
@@ -106,12 +105,15 @@ export default function NewNote() {
   };
 
   const stopListening = () => {
+    setIsRecording(false);
     setOpen(false);
     // setNoteData(transcript);
     // setDoneRecording(true);
     // SpeechRecognition.stopListening();
     StopRecording();
-    history.push(`/my/transcript-notes/edit/${finalTranscript}`);
+    if (finalTranscript !== "")
+      history.push(`/my/transcript-notes/edit/${finalTranscript}`);
+    // else history.push("/my/transcript-notes/edit");
   };
 
   // console.log(transcript);
@@ -141,6 +143,7 @@ export default function NewNote() {
             size="large"
             className={styles.fab1}
             onClick={listenContinuously}
+            disabled={error}
           >
             <MicIcon />
           </Fab>

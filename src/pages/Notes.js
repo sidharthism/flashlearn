@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Fab, List } from "@material-ui/core";
 import MicIcon from "@material-ui/icons/Mic";
@@ -33,6 +33,7 @@ export default function Notes() {
   } = useAuth();
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState([]);
+  const history = useHistory();
 
   function loadNotes(userId) {
     const notesRef = db.collection("fl_users").doc(userId).collection("notes");
@@ -70,12 +71,17 @@ export default function Notes() {
             })}
         </List>
       </Container>
-      <Link to="/my/transcript-notes/new">
-        <Fab size="medium" variant="extended" className={styles.fab}>
-          <MicIcon className={styles.extendedIcon} />
-          {"NEW"}
-        </Fab>
-      </Link>
+      <Fab
+        size="medium"
+        variant="extended"
+        className={styles.fab}
+        onClick={() => {
+          history.push("/my/transcript-notes/new");
+        }}
+      >
+        <MicIcon className={styles.extendedIcon} />
+        {"NEW"}
+      </Fab>
     </>
   );
 }
