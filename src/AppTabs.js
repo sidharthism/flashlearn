@@ -1,10 +1,12 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-import { NavBar, TopicList } from "./components";
+import { NavBar } from "./components";
 import {
   Home,
   NewNote,
+  EditNote,
+  Notes,
   Deck,
   NewDeck,
   Review,
@@ -39,10 +41,13 @@ function AppTabs() {
         <Review />
       </Route>
       <Route exact path="/my/transcript-notes">
-        <TopicList />
+        <Notes />
       </Route>
       <Route exact path="/my/transcript-notes/new">
         <NewNote />
+      </Route>
+      <Route path="/my/transcript-notes/edit/:transcript">
+        <EditNote />
       </Route>
       <Route exact path="/my/settings">
         <Settings />
@@ -51,6 +56,11 @@ function AppTabs() {
         <Profile />
       </Route>
       <Redirect exact path="/my" to="/my/card-decks" />
+      <Redirect
+        exact
+        path="/my/transcript-notes/edit"
+        to="/my/transcript-notes/edit/new-note"
+      />
     </>
   );
 }

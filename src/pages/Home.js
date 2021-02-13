@@ -114,7 +114,7 @@ export default function Home() {
           })}
           {cardDecks.length === 0 && (
             <div className={styles.empty}>
-              {"To create a new deck, click +"}
+              <span>{"To create a new deck, click +"}</span>
             </div>
           )}
         </Container>

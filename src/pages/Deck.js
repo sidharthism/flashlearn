@@ -177,7 +177,7 @@ export default function Deck() {
           })}
           {flashCards.length === 0 && (
             <div className={styles.empty}>
-              {"To create a new flash card, click +"}
+              <span>{"To create a new flash card, click +"}</span>
             </div>
           )}
         </Container>

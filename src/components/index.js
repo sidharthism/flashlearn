@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import SnackBar from "./SnackBar";
 import TopicList from "./TopicList";
 import Spinner from "./Spinner";
+import NoteItem from "./NoteItem";
 
 export {
   CardDeck,
@@ -16,4 +17,5 @@ export {
   SnackBar,
   Spinner,
   TopicList,
+  NoteItem,
 };

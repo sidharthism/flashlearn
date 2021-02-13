@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {
   ChevronRight as ArrowIcon,
   MenuBook as BookIcon,
+  FiberSmartRecord as RecordIcon,
 } from "@material-ui/icons";
 import {
   ListItemAvatar,
@@ -82,7 +83,7 @@ function TopicItem() {
       <ListItem button className={styles.topicItem} onClick={handleClick}>
         <ListItemAvatar>
           <Avatar className={styles.bookContainer}>
-            <BookIcon />
+            <RecordIcon />
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Topic 1" secondary="27 Flash Cards" />
